@@ -7,7 +7,7 @@ class CharactersRepository {
   int _pageForRequest = 1;
   static bool _hasMorePage = true;
 
-  static bool get hasMorePage => _hasMorePage;
+  bool get hasMorePage => _hasMorePage;
 
   final List<CharacterEntity> _characters = [];
 

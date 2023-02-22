@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:rick_and_morty/features/character_details/repository/character_repository.dart';
-import 'package:rick_and_morty/features/characteres/entity/character_entity.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rick_and_morty/features/character_details/bloc/character_details_bloc/character_details_bloc.dart';
 
 class CharacterDetailsScreen extends StatefulWidget {
   final int id;
@@ -12,27 +12,21 @@ class CharacterDetailsScreen extends StatefulWidget {
 }
 
 class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
-  final _characterRepository = CharacterResository();
-
-  Future<CharacterEntity?> _getCharacter(int id) async {
-    print('!!! 1 _getCharacter()');
-    return await _characterRepository.getCharacter(id);
-  }
-
   @override
   void initState() {
+    context.read<CharacterDetailsBloc>().add(LoadCharacter(widget.id));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: FutureBuilder<CharacterEntity?>(
-            future: _getCharacter(widget.id),
-            builder: (context, snapshot) {
-              if (snapshot.hasData && snapshot.data != null) {
-                final item = snapshot.data!;
+      appBar: AppBar(),
+      body: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
+          builder: (context, state) {
+            switch (state.status) {
+              case CharacterStatus.success:
+                final item = state.item!;
                 return Center(
                   child: SingleChildScrollView(
                     child: Padding(
@@ -44,7 +38,7 @@ class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
                         children: [
                           ClipRRect(
                             borderRadius:
-                                const BorderRadius.all(Radius.circular(16)),
+                            const BorderRadius.all(Radius.circular(16)),
                             child: Image.network(
                               item.image,
                               width: 300,
@@ -62,8 +56,26 @@ class _CharacterDetailsScreenState extends State<CharacterDetailsScreen> {
                     ),
                   ),
                 );
-              }
-              return const Center(child: CupertinoActivityIndicator());
-            }));
+
+              case CharacterStatus.loading:
+                return const Center(child: CupertinoActivityIndicator());
+
+              case CharacterStatus.failure:
+                return Center(
+                  child: Column(
+                    children: [
+                      const Text('Ошибка загрузки данных,\nповторите попытку'),
+                      ElevatedButton(
+                        onPressed: () => context
+                            .read<CharacterDetailsBloc>()
+                            .add(LoadCharacter(widget.id)),
+                        child: const Text('Повторить'),
+                      ),
+                    ],
+                  ),
+                );
+            }
+          }),
+    );
   }
 }
