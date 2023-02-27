@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/features/character_details/bloc/character_details_bloc/character_details_bloc.dart';
 import 'package:rick_and_morty/features/character_details/presentation/character_details_screen.dart';
 import 'package:rick_and_morty/features/characteres/bloc/characters_bloc/characters_bloc.dart';
+import 'package:wave/config.dart';
+import 'package:wave/wave.dart';
 
 class CharactersScreen extends StatelessWidget {
   const CharactersScreen({Key? key}) : super(key: key);
@@ -13,48 +15,55 @@ class CharactersScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Rick and Morty')),
-      body: BlocBuilder<CharactersBloc, CharactersState>(
-          builder: (context, state) {
+      body: Stack(
+        children: [
+          BlocBuilder<CharactersBloc, CharactersState>(
+              builder: (context, state) {
             final bloc = context.read<CharactersBloc>();
             switch (state.status) {
               case StatsStatus.success:
                 final items = state.items;
-                return ListView.separated(
-                  itemBuilder: (context, index) {
-                    final triggerIndex = max(0, items.length - 5);
-                    final hasMorePage = state.isHasMorePage;
+                return Padding(
+                  padding: EdgeInsets.only(
+                    bottom: 50 + MediaQuery.of(context).padding.bottom,
+                  ),
+                  child: ListView.separated(
+                    itemBuilder: (context, index) {
+                      final triggerIndex = max(0, items.length - 5);
+                      final hasMorePage = state.isHasMorePage;
 
-                    final item = items[index];
-                    print('currentIndex $index');
-                    print(
-                        'triggerIndex $triggerIndex, items.length ${items.length}');
-                    print(
-                        ' hasMorePage && index == triggerIndex ${hasMorePage && index == triggerIndex}');
-                    if (hasMorePage && index == triggerIndex) {
-                      bloc.add(const LoadCharacters(refresh: false));
-                    }
+                      final item = items[index];
+                      print('currentIndex $index');
+                      print(
+                          'triggerIndex $triggerIndex, items.length ${items.length}');
+                      print(
+                          ' hasMorePage && index == triggerIndex ${hasMorePage && index == triggerIndex}');
+                      if (hasMorePage && index == triggerIndex) {
+                        bloc.add(const LoadCharacters(refresh: false));
+                      }
 
-                    return ListTile(
-                      leading: ClipRRect(
-                        borderRadius: const BorderRadius.all(Radius.circular(8)),
-                        child: Image.network(item.image),
-                      ),
-                      title: Text(item.name),
-                      subtitle: Text('${item.gender}, ${item.species}'),
-                      trailing: const Icon(Icons.navigate_next),
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BlocProvider(
-                            create: (context) => CharacterDetailsBloc(),
-                            child: CharacterDetailsScreen(id: item.id),
+                      return ListTile(
+                        leading: ClipRRect(
+                          borderRadius: const BorderRadius.all(Radius.circular(8)),
+                          child: Image.network(item.image),
+                        ),
+                        title: Text(item.name),
+                        subtitle: Text('${item.gender}, ${item.species}'),
+                        trailing: const Icon(Icons.navigate_next),
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BlocProvider(
+                              create: (context) => CharacterDetailsBloc(),
+                              child: CharacterDetailsScreen(id: item.id),
+                            ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: items.length,
+                      );
+                    },
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: items.length,
+                  ),
                 );
               case StatsStatus.failure:
                 return Center(
@@ -74,6 +83,64 @@ class CharactersScreen extends StatelessWidget {
                 return const Center(child: CupertinoActivityIndicator());
             }
           }),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Stack(
+              children: [
+                WaveWidget(
+                  config: CustomConfig(
+                    colors: [Colors.teal[400]!],
+                    durations: [18000],
+                    heightPercentages: [0.0],
+                  ),
+                  backgroundColor: Colors.transparent,
+                  size: Size(double.infinity,
+                      56 + 16 + MediaQuery.of(context).padding.bottom),
+                  waveAmplitude: 0,
+                ),
+                Container(
+                  height: 56 + MediaQuery.of(context).padding.bottom,
+                  color: Colors.transparent,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () => print('1'),
+                            child: const Center(
+                                child: Icon(
+                                  Icons.waves,
+                                  color: Colors.greenAccent,
+                                )),
+                          )),
+                      GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTap: () => print('2'),
+                          child: const Center(
+                              child: Icon(
+                                Icons.wallpaper,
+                                color: Colors.greenAccent,
+                              ))),
+                      Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () => print('3'),
+                            child: const Center(
+                                child: Icon(
+                                  Icons.wallet_giftcard,
+                                  color: Colors.greenAccent,
+                                )),
+                          )),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
