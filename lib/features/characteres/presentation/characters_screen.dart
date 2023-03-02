@@ -89,9 +89,9 @@ class CharactersScreen extends StatelessWidget {
               children: [
                 WaveWidget(
                   config: CustomConfig(
-                    colors: [Colors.teal[400]!],
-                    durations: [18000],
-                    heightPercentages: [0.0],
+                    colors: [Color(0xFF131F2A), Color(0xFF213649), Color(0xFF2F4D68)],
+                    durations: [96000, 36000, 48000],
+                    heightPercentages: [0.0, 0.1, 0.2],
                   ),
                   backgroundColor: Colors.transparent,
                   size: Size(double.infinity,
@@ -112,7 +112,7 @@ class CharactersScreen extends StatelessWidget {
                             child: const Center(
                                 child: Icon(
                                   Icons.waves,
-                                  color: Colors.greenAccent,
+                                  color: Colors.white,
                                 )),
                           )),
                       GestureDetector(
@@ -121,7 +121,7 @@ class CharactersScreen extends StatelessWidget {
                           child: const Center(
                               child: Icon(
                                 Icons.wallpaper,
-                                color: Colors.greenAccent,
+                                color: Colors.white,
                               ))),
                       Expanded(
                           child: GestureDetector(
@@ -130,7 +130,7 @@ class CharactersScreen extends StatelessWidget {
                             child: const Center(
                                 child: Icon(
                                   Icons.wallet_giftcard,
-                                  color: Colors.greenAccent,
+                                  color: Colors.white,
                                 )),
                           )),
                     ],
