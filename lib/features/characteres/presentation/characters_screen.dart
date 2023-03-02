@@ -89,7 +89,7 @@ class CharactersScreen extends StatelessWidget {
               children: [
                 WaveWidget(
                   config: CustomConfig(
-                    colors: [Color(0xFF131F2A), Color(0xFF213649), Color(0xFF2F4D68)],
+                    colors: [Color(0xFF2F4D68), Color(0xFF213649), Color(0xFF131F2A)],
                     durations: [96000, 36000, 48000],
                     heightPercentages: [0.0, 0.1, 0.2],
                   ),
