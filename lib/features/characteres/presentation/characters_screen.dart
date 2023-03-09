@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/features/character_details/bloc/character_details_bloc/character_details_bloc.dart';
 import 'package:rick_and_morty/features/character_details/presentation/character_details_screen.dart';
+import 'package:rick_and_morty/features/character_details/repository/character_repository_remote.dart';
 import 'package:rick_and_morty/features/characteres/bloc/characters_bloc/characters_bloc.dart';
 
 class CharactersScreen extends StatelessWidget {
@@ -46,7 +47,7 @@ class CharactersScreen extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => BlocProvider(
-                            create: (context) => CharacterDetailsBloc(),
+                            create: (context) => CharacterDetailsBloc(CharacterRepositoryRemote()),
                             child: CharacterDetailsScreen(id: item.id),
                           ),
                         ),

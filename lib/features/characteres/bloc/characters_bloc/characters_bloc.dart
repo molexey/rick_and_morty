@@ -4,14 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:rick_and_morty/features/characteres/entity/character_entity.dart';
 import 'package:rick_and_morty/features/characteres/repository/characters_repository.dart';
+import 'package:rick_and_morty/features/characteres/repository/characters_repository_remote.dart';
 
 part 'characters_event.dart';
 part 'characters_state.dart';
 
 class CharactersBloc extends Bloc<CharactersEvent, CharactersState> {
-  final _charactersRepository = CharactersRepository();
+  final ICharactersRepository _charactersRepository;
 
-  CharactersBloc() : super(const CharactersState()) {
+  CharactersBloc(this._charactersRepository) : super(const CharactersState()) {
     on<LoadCharacters>(_onLoadCharacters);
   }
 
