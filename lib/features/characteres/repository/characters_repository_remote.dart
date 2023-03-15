@@ -1,4 +1,4 @@
-import 'package:rick_and_morty/api/characteres/characteres_api.dart';
+import 'package:core/core.dart';
 import 'package:rick_and_morty/features/characteres/entity/character_entity.dart';
 import 'package:rick_and_morty/features/characteres/repository/characters_repository.dart';
 

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
-import 'package:rick_and_morty/api/characteres/data/characters_response_dto.dart';
+import 'package:core/core.dart';
+//import 'package:rick_and_morty/api/characteres/data/characters_response_dto.dart';
 import 'package:rick_and_morty/features/characteres/entity/character_entity.dart';
 
 class CharactersApi {

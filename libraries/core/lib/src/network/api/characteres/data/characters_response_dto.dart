@@ -1,5 +1,6 @@
+import 'package:core/core.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:rick_and_morty/api/characteres/data/response_info_dto.dart';
+//import 'package:src/network/api/characteres/data/response_info_dto.dart';
 import 'package:rick_and_morty/features/characteres/entity/character_entity.dart';
 
 part 'characters_response_dto.g.dart';
